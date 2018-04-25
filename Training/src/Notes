@@ -1,0 +1,412 @@
+javac -d location javafilename  [javac -d . Simple.java]
+pack.A obj = new pack.A();//using fully qualified name  
+Note: If you import a package, subpackages will not be imported.
+The standard of defining package is domain.company.package e.g. com.cox.ui or org.cox.dao.
+There can be only one public class in a java source file and it must be saved by the public class name.
+To Compile:
+e:\sources> javac -d c:\classes Simple.java
+
+To Run: 
+e:\sources> set classpath=c:\classes;.;
+e:\sources> java mypack.Simple
+e:\sources> java -classpath c:\classes mypack.Simple
+
+The Object class is beneficial if you want to refer any object whose type you don't know. 
+Notice that parent class reference variable can refer the child class object, know as upcasting.
+Object obj=getAnyObject();
+
+The javap command displays information about the fields,constructors and methods present in a class file.
+e:\sources> javap java.lang.Object  
+
+Java socket programming provides facility to share data between different computing devices.
+1. sharing resources
+2. centralize software management
+
+protocol://serverName or IP Address:portNumber/fileName
+https://google.com:80/index.home
+Q. Defference between -d & -D ?
+//-----------------------------
+class Local{};
+System.out.println(Local.class.getEnclosingMethod().getName());
+StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+System.out.println(stack[stack.length-1].getClassName());
+System.out.println(stack[stack.length-1].getLineNumber());
+report.updateTestLog(stack[stack.length-1].getMethodName().toUpperCase(), message, s);
+//-----------------------------
+- You can not use super/this in a static reference, means you can not make super or this call from a static method. 
+- Explicit parameterised super call should be done from either of the Sub class constructor, in case of super class not having 
+  default constructor.
+- Important Block Execution:
+- First of all public class will get load
+- Then Static Block Execution - main-method - init and constructor execution will take place only if constructor invocation is done like (A a = new A();)
+- /*Running Sequence for each class:
+	1. All static-blocks
+	2. main()
+		{
+			if(obj creation)
+			{
+	3. 			init-blocks
+	4. 			constructor
+			}
+		}
+	5. variable or methods.*/
+- In case of inheritance first Super execution will happen then Sub
+//If want to make your own immutable object, it will be wiser to override the equals() and hashCode() methods. 
+//1. java.util.Hashtable extends Dictionary and implements Map. Objects with non-null value 
+//   can be used as a key or value. Key of the Hashtable must implement hashcode() and equals() methods.
+//2. Generally a Hashtable in java is created using the empty constructor Hashtable(). Which is a poor decision and an often repeated mistake. 
+//3. Hashtable has two other constructors: Hashtable(int initialCapacity) & Hashtable(int initialCapacity, float loadFactor)
+//4. Initial capacity is number of buckets created at the time of Hashtable instantiation. Bucket is a logical space of storage for Hashtable. 
+//5. Hashtable is a key-value pair, you need not sequentially scan through the keys to identify a value.
+//6. The general contract of hashCode is: Whenever it is invoked on the same object more than once during an execution of a Java application, 
+//   the hashCode method must consistently return the same integer, provided no information used in equals comparisons on the object is modified.  
+//7. For two different keys k1 and k2, if we have h(k1) = h(k2), then this is called collision in hashtable.
+//8. To name a few hashtable collision resolution technique, separate chaining, open addressing, robin hood hashing, cuckoo hashing, etc. 
+//   Java's hashtable uses separate chaining for collision resolution in Hashtable.
+- In String equals() checks values and "==" checks reference, equals() checks values because it is over-rided for String class, otherwise both checks reference.
+- System.out.println('A'==65);      //true, char is checked with ASCII value.
+- //instanceof does not checks reference-of
+		String s2 = null;     //"null" and any reference referring to it do not passes "instanceof" test.
+		System.out.println(s2 instanceof String);     // false
+		System.out.println(null instanceof String);   // false
+- System.out.println(strVal+(intA+intB)); 
+- String u = "39" 
+  u+=1; // u =391
+- int largest = ((a>b) & (a>c)) ? (a) : ((b>c) ? b : c) ;  // conditional operator.
+- a=(byte)(a+b);  //a=a+b; will show error. if a and b both are byte. You have to down cast explicitly.
+- a+=b;           //It will do auto-casting(int to byte).
+- There is only call by value in java, not call by reference. If we call a method passing a value, 
+  It is known as call by value. The changes being done in the called method, is not affected in the calling method.
+- In case of call by reference original value is changed if we made changes in the called method. 
+  If we pass object in place of any primitive value, original value will be changed.  
+- enum CupSize{SMALL, MEDIUM, LARGE};   //outside 'enum' can't be private.
+  public class Coffee 
+  {
+	CupSize size;
+	public static void main(String[] args) 
+	{		
+		Coffee c = new Coffee();
+		c.size = CupSize.MEDIUM;
+		System.out.println(c.size);
+	}
+  }
+- 	static int a = (int)3.14;   // here also there is "loss of precision", but you did it explicitly.
+	static byte b = 39;         // upto 127 is treated as byte, after that it is int. 39 +100 of byte will give you -117 
+	static byte c = (byte)139;  // output will be from loop i.e. -126
+	//static long d = 3.14;     // can not convert from double to long
+	static double d = 55555;
+	static float e = 3;
+- //Enum in java is a data type that contains fixed set of constants-values like; 7 fixed days, 4 directions, juice-glass-size, all browser type.
+//The java enum constants are static and final implicitly.
+//Enum Points:
+//enum improves type safety
+//enum can be easily used in switch
+//enum can be traversed
+//enum can have fields, constructors and methods
+//enum may implement many interfaces but cannot extend any class because it internally extends Enum class
+//values() method in enum: The java compiler internally adds the values() method when it creates an enum. The values() method returns an array containing all the values of the enum.
+//How many .class file below program will generate? => 5(for interface, abstract class, innerEnum, outerEnum, main testing class i.e. Test1)
+//1. Initializing specific values to the enum constants.
+//2. The enum constants have initial value that starts from 0, 1, 2, 3 and so on. But we can initialize 
+//the specific value to the enum constants by defining fields and constructors. As specified earlier, 
+//Enum can have fields, constructors and methods.
+//3. Constructor of enum type is private. If you don't declare private compiler internally creates private constructor.
+/*4. Can we create the instance of enum by new keyword? No, because it contains private constructors only.
+Can we have abstract method in enum?
+Yes, ofcourse! we can have abstract methods and can provide the implementation of these methods.*/
+- values() method in enum: The java compiler internally adds the values() method when it creates an enum. The values() method returns an array containing all the values of the enum.
+- How many .class file below program will generate? => 5(for interface, abstract class, innerEnum, outerEnum, main testing class i.e. Test1)
+- Enum can be used in switch case.
+- protected void finalize() throws Throwable 
+- class GCTest
+  {
+	public static void main(String[] args)
+	{
+		GCTest t = new GCTest();
+		//t.finalize();   //If finalize() is called explicitly, then it will behave as simple method and terminate abnormally throwing Exception.
+		t = null;
+		System.gc();    //If finalize() is called implicitly, then it terminates normally and handle uncaught Exception. 
+		System.out.println("End of main()");	
+	}
+	public void finalize()
+	{
+		System.out.println("finalize()");
+		System.out.println(10/0);
+	}
+  }
+- s.supMethod(new Sub1());  // super class can be called by its sub class reference.
+  s.supMethod(new Sub2());
+- static method can be inherited, but cannot be override. In case of override it will be called as method redefining.
+- variable of a class and static methods are invoked based on its reference type and other functions are called based on its object creation.
+- Finalized method is called by the garbage collector on an object when garbage collection determines that there are no more references to the object.
+- syntax : protected void finalize() throws Throwable 
+- Then the corresponding class' finalize() will be called on that object.
+- Or System.gc(); (Runtime.getRuntime().gc();) will invoke finalize() of that class for which object is null.
+- You can explicitly call finalize(), but it will work as normal method, no cleanup.
+- If finalize() is called explicitly, then it will behave as simple method and terminate abnormally throwing Exception (in case some exception is raised in finalize() method).
+- obj.hashcode() gives nullPointerException if it does not hold any object. Just having reference will not give any hashcode value.
+- As a programmer you can only remind JVM to run "garbage collector" but there is no guarantee that it will run gc in next step. It means you can't request JVM to run gc, explicitly.
+- Runtime is singleton class (implements singleton-design-pattern), which has only one object and can't be created using its constructor.
+  like: Calendar c = Calendar.getInstance();
+	  System.out.println(c.getTime());
+	  Runtime r = Runtime.getRuntime();
+- Spring and Selenium testing framework follows singleton pattern whereas Hibernate follows Factory method pattern.
+- Annotations in java are used to provide additional information for class, interface, methods or fields,
+- Built-In Java Annotations used in java code: //@Override //@SuppressWarnings //@Deprecated
+- @interface element is used to declare an custom annotation like: @interface MyAnnotation{}  
+//Rules: Method should not have any throws clauses, it can return either of primitive data types, String, Class, enum or array of these data types.
+//There are three types of annotations: 
+//1. Marker Annotation: An annotation that has no method like: @Override and @Deprecated
+//2. Single-Value Annotation: which has one method call.
+//3. Multi-Value Annotation: which has multi method call.
+- You can overload any method by passing different objects as arguments.
+- Just having other class' object-reference (B bObj) does not help in other class' feature invocation. It should have object with it (B bObj = new B();)
+- Super <-- Sub1 <-- Sub2 (Inherited)
+  Super s = new Super(); 
+  s.supMethod(new Sub1());   // super class can be called by its sub class reference.
+  s.supMethod(new Sub2());
+- int x = (int)(Math.random()*5);
+- static void change(final int num) { num++; }    //If final is used as argument then, you can't manipulate 'num'.
+- Horse fxn8()     // After typecast only we can return its super-class.
+	{
+		return (Horse)(new Animal());
+	}
+- Wrapper Classes are introduced because of: 1. Wrapping primitive values in objects, so that it can be used in collection, and return as a object.
+- int i3 = i1.intValue();              //xxxValue(); It returns primitive value.(unboxing)
+  int i4 = Integer.parseInt("81");     //parseXXX(); It returns primitive.
+  Integer i5 = Integer.valueOf("79");  //valueOf() it returns object.
+- Integer i1 = 100; Integer i2 = 100;
+- System.out.println(i1==i2);        //true //upto 127 "==" also check values, it doesn't check reference, although both are different objects.
+- Integer i1 = 1000; Integer i2 = 1000;
+- System.out.println(i3==i4);        //false //after 127 it checks reference, it doesn't check value 
+- //Method Overloading----->>
+  Either "number of parameters" or "type of parameters" should be different. //return type doesn't matter. //name of the methods should be same.
+- //final variable can't be changed. //final methods can't be overrided. //final class can't be inherited.
+- Blank final variable, are those final variables which are final and do not have any initial value.
+  and there are only two possibility to assign value, i.e. init-block and constructor, but you can use only one at a time.
+- You can not have a blank final variable, you have to in initialize it either from constructor or init block.
+- "Blank static final variables" are those variables which are final and static and do not have any initial value, but there is only one possibility to assign value, i.e. static block.
+- Inheritance and MOR
+  Inheritance is the concept in which one object/class acquire the properties and behaviour of parent object/class. 
+  Inheritance represented IS-A relationship.
+  It helps in code reusablity and save developing time.
+  It support runtime-polymorphism (method-overriding).
+  /*syntax:
+	class BMW extends Car  // extend keyword is used, BMW IS-A Car
+	{
+	
+	}*/
+- Constructors do not get inherit.
+- Advantage of Java Generics:
+- Arrays are type-safe but collections are not.
+1)	Type-safety : We can hold only a single type of objects in generics. It does not allow to store other objects.
+2)	Type casting is not required: There is no need to typecast the object. Before Generics, we need to type cast.
+	List list = new ArrayList();  
+	list.add("hello");  
+	String s = (String) list.get(0);//Explicit typecasting  
+3)	Compile-Time Checking than run time
+-  Now use Map.Entry for Set and Iterator
+	Set<Map.Entry<Integer, String>> set = map.entrySet();  //first convert map into set then use Iterator on set using Map.Entry.
+	Iterator<Map.Entry<Integer, String>> itr = set.iterator();
+	while (itr.hasNext()) 
+	{
+		Map.Entry e = itr.next();// no need to typecast
+		System.out.println(e.getKey() + " " + e.getValue());
+	}
+- Class referring to any particular type is known as generic class. Here, we are using 'T' type parameter to create the generic class of specific type.
+- T - Type, E - Element, K - Key, N - Number, V - Value
+  Like generic class, we can create generic method that can accept any type of argument.
+- Create a common function which can accept all type of parameters to display but without MOL.
+- Outerr.Innerr oi = o.new Innerr();   //Outerr.Innerr oi = new Outerr().new Innerr();
+  oi.innerFxn();
+- interface can also be cascaded.          
+- Anonymous class and inner class and inne interface.
+- c.engine(new FourWheeler() {     // Have to implement interface with it's methods.
+			public void oil() {
+				System.out.println("It uses Petrol or Diesle as fuel.");			
+			}
+		});
+- Class can only be final, public and abstract. static can be used only for the inner classes.
+- MyOuter.Nest mon = new MyOuter.Nest();
+  mon.nested();
+ - /*Vector is as same as ArrayList, except methods of Vector class are thread-safe, synchronized, slow at runtime.
+ * Vector is Growable array, 
+ * insertion order is preserved 
+ * duplicacy is allowed
+ * Heterogeneous objects are allowed(except TreeSet & TreeMap)  
+ * Null insertion is allowed
+ * ArrayList is best suited for retrieval not for insertion and deletion. 
+ * implement Serializable, Clonable and RandomAccess marker interface.
+ *what else function?
+ *Vector v = new Vector();   //new_capcity = 2*old_capcity
+ *Vector v = new Vector(capacity);
+ *Vector v = new Vector(capacity, increment-factor);
+ -/*Stack is for LIFO; Last In First Out
+ * Stack is the child of the Vector Class.
+ * Stack methods : push(), pop(), empty(), search(), peek()
+-*ArrayList: Growable array, grow dynamically
+ * insertion order is preserved, duplicacy is allowed
+ * Heterogeneous objects are allowed if generics is not used (except TreeSet & TreeMap)  
+ * Null insertion is allowed
+ * ArrayList is best suited for retrieval not for insertion and deletion. 
+ * implement Serializable, Clonable and RandomAccess marker interface.
+- ArrayList class implement RandomAccess because it provides random accessing facility, but LinkedList does not.
+- There is no difference between ArrayList and Vector class except all methods of Vector class is synchronized means thread-safe means slow  in execution.*/
+- ArrayList l1 = new ArrayList();
+  List l2 = Collections.synchronizedList(l1);
+  // in the same way you can make Set and Map's methods synchronised.
+- Collections.sort(l);
+-* Set: In set duplicacy of elements is not allowed, insertion order is not preserved.
+ * HashSet: underlying data-structure is 'hashtable' .
+ * insertion order is not preserved, it is based on hashcode. 
+ * duplicacy is not allowed, for duplicate object you will not get any exception but you will get 'false'.
+ * Heterogeneous objects are allowed(except in TreeSet)  
+ * Null insertion is allowed
+ * HashSet is best suited for searching.
+ * HashSet implement Serializable, Cloneable but not RandomAccess marker interface.
+- Adding duplicate object gives false in Set (HashSet or LinkedHashSet)
+- LinkedHashSet is a combination of LinkedList and HashSet.
+- For LinkedHashSet insertion order is preserved with no duplicate object.
+- h.addAll(l);             // will add all LinkList contents to HashSet.
+  System.out.println(h);   // combined output in random order, with no duplicate object.
+- /*TreeSet : underlying data structure is balanced tree.
+	no duplicacy of elements.
+	insertion order is not preserved.
+	Hetrogeneous elements are not allowed for TreeSet.
+	TreeSet t = new TreeSet();              It does natural sorting.
+	TreeSet t = new TreeSet(Comparator c);  It does customised sorting.*/
+-*for using TreeSet your elements should be Comparable or it should implement Comparator class.
+ * All String classes and Wrapper classes implements Comparable and Serializable 
+ * interface but StringBuffer and StringBuilder class don't implement Comparable so it give "ClassCastException".
+ * t.add(new StringBuilder("A"));
+ * System.out.println(t);      //"ClassCastException"
+- SortedSet ss = new TreeSet();
+- Difference between HashMap (checks values of key by equals(), means by value) and IdentityHashMap (checks values of key by "==". means by reference)?
+  At the time of printing it removes duplicate keys in case of HashMap but not in case of IdentityHashMap.
+- You have to implement toString if you are going to print object directly.
+- /*LinkedList: underlying data-structure is doubly-linklist .
+ * insertion order is preserved 
+ * duplicacy is allowed
+ * Heterogeneous objects are allowed(except TreeSet & TreeMap)  
+ * Null insertion is allowed
+ * LinkedList is best suited for insertion and deletion but not for retrieval.
+ * implement Serializable, Cloneable but not RandomAccess marker interface.
+- LinkedList<Integer> l1 = new LinkedList<Integer>();
+- ListIterator is most powerful cursor has bi-directional access, and you can add(), remove(), set(), previous()
+- How to use iterator on Set and on List?
+-* Limitations of Iterator:
+ * Enumeration and Iterator both are one-directional moves forward only, can't do backward.
+ * Iterator do read and remove but can't do replace and add of elements. * 
+ * */
+- Iterator itr = l.iterator();
+		while(itr.hasNext())
+		{
+			Integer i = (Integer)itr.next();
+		}
+- What is the difference when we use iterator on list and on set (if required first conver from map).
+- Difference between HashMap and HashTable?
+/*HashMap :under lying data structure HashTable, 
+ * non-synchronised methods,
+ * not-thread-safe, 
+ * high performance; 
+ * null-insertion;
+ * insertion order not preserved
+ * key will be unique, values can be redundant.
+ * HashTable is opposite to HashMap.
+- LinkedHashMap's underlying data structure is "LinkedList" and "HashTable".
+- Only difference between HashMap and LinkedHashMap is in LinkedHashMap insertion order is preserved.
+- Set map.entrySet(), Collection map.values(), Set map.entrySet()
+- * There are 3 Cursors in java: Enumeration, Iterator, ListIterator
+ * Cursors are used to deal with elements/objects one-by-one.
+ * Enumeration, is used with legacy classes like: Vector.
+ * Drawback of Enumeration, we can only retrieve elements no other operation like remove.
+-	Enumeration e = vec.elements();
+		while(e.hasMoreElements())
+		{
+			Integer i = (Integer)e.nextElement();
+		}
+- If you don't override toString() then it gives you the package name, class name followed by the @ symbol, followed by the unsigned hexadecimal representation of
+the object's hashcode.
+- SortedMap :is also like Map, K-V, do some sorting based on keys.
+  SortedMap sm = new TreeMap();
+- Difference in TreeMap and HashMap?
+- TreeMap: under lying data structure is RED-BLACK tree.
+- HashMap dominate over garbage collector, even if there is no object reference.
+  WeakHashMap does not dominate over garbage collector.
+- //Comparable interface has only method "public int compareTo(Object o)".
+//java.lang.Comparable is used for default/natural sorting whereas java.util.Comparator is used for customised sorting. 
+//o1.compareTo(o2) -> If o1 comes before o2, then -ve
+//o1.compareTo(o2) -> If o1 comes after o2, then +ve
+//o1.compareTo(o2) -> If o1 is as same as o2, then 0
+//Comparator has two methods like :"public int compare(Object o1, Objecto2)" and "public boolean equals(Object o)".
+//If o1 comes before o2, then -ve
+//In side any method if Exception occurs, then it creates the object of that exception and over to the
+// JVM then JVM checks whether it is containing the handling code or not.
+//If it does not contain exception handling code then it passes it to the caller, which calls that function, and checks in
+//that function for the exception, and this process continue until main().
+//If handler is still not found then JVM handle the exception showing stack trace for that.
+//Difference between throws and throw(used for user-defined-exception).
+//For customized exception you need to extend RuntimeException.
+==============
+- The values assigned inside constructor overwrite the values initialized with declaration.
+- Multithreading is achieved used either extending 'Thread' class or implementing 'Runnable' interface. 
+- Only Thread Scheduler decided which Thread to be executed so random outputs come for multithreaded application.
+- If you are not extending Thread class then it will not implement multithreading.
+ 1. It register with Thread Sheduler.
+ 2. It provides run()
+- It is highly recommended to override run(), otherwise it will give no output.
+- You can overload run(), but start() will call only non-parameterised.
+- If you will override(not recommended) start(), then it will not call run().
+- Ideally we should invoke start() which in-turn call run().
+- Runnable gives run(), Thread gives start().
+- Thread.currentThread().setName("Children");
+- Thread.currentThread().getName(); Thread.currentThread().getId();
+- t.currentThread().MAX_PRIORITY ==> 10
+- t.currentThread().MIN_PRIORITY ==> 1
+- Daemon threads are those threads which run in background like: garbageCollector.
+- You can convert any thread to Daemon Thread using t.setDaemon(true);	
+- main-method thread can never be a Daemon thread, gives IllegalThreadStateException
+- As soon as you will destroy non-daemon thread, all dependent daemon thread will be destroy.
+- For inter-thread-communication three methods are used :
+- wait(): Thread which require updation calls wait().Thread which perform updation calls notify, notifyAll()
+- To call these three methods on any object the current thread should lock the object i.e. it should be in synchronised area.
+- For calling wait(), thread should immediately remove lock from the object.
+- For calling notify(), thread should remove lock from the object but may not immediately.
+- System.getProperties().list(System.out);
+-   FileInputStream fin = new FileInputStream(new File(srcFile));
+	FileOutputStream fout = new FileOutputStream(new File(destFile));
+	while((status=fin.read())!=-1)
+	{
+		fout.write(status);
+	}
+- BufferedInputStream and BufferedOutputStream make use of buffer to store some data in advance and make the performance better and faster.
+- String s = "Some message.";
+  BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+  bout.write(s.getBytes()); 
+- Java ByteArrayOutputStream class is used to write data into multiple files.
+- Java SequenceInputStream class is used to read data from multiple streams. It reads data of streams one by one.
+- Java FileWriter and FileReader classes are used to write and read data from text files. These are character-oriented classes, used for file handling in java.
+- Java has suggested not to use the FileInputStream and FileOutputStream classes if you have to read and write the textual information.
+- FileWriter(String file): creates a new file automatically. It gets file name in string.
+- FileWriter(File file): creates a new file. It gets file name in File object.
+- public void write(String text)/write(char c)/write(char[] c)
+-   CharArrayWriter out = new CharArrayWriter();
+	out.write("Helo, Good Morning.");
+	FileWriter fw1 = new FileWriter(filePath+"\\A.txt");
+	out.writeTo(fw1);
+- InputStreamReader class can be used to read data from keyboard.It performs two tasks:
+	-connects to input stream of keyboard
+	-converts the byte-oriented stream into character-oriented stream
+- InputStreamReader sr = new InputStreamReader(System.in);
+	BufferedReader br = new BufferedReader(sr);
+	while(true)
+	{
+		System.out.println("Enter Your Name:");
+		String name = br.readLine();
+	}
+- next() will just take first word seperated by space, whereas nextLine() will take full line for Scanner class.
+- The PrintStream class provides methods to write data to another stream. The PrintStream class automatically flushes the data so there is no need to call flush() method. Moreover, its methods don't throw IOException.
+
+
+
+
