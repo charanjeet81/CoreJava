@@ -407,6 +407,6 @@ the object's hashcode.
 - next() will just take first word seperated by space, whereas nextLine() will take full line for Scanner class.
 - The PrintStream class provides methods to write data to another stream. The PrintStream class automatically flushes the data so there is no need to call flush() method. Moreover, its methods don't throw IOException.
 
-
+hello git...
 
 
